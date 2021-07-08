@@ -1,0 +1,88 @@
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.653 (s)
+flops        : 45.160 (GFlops)
+throughput   : 55.581 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.074 (s)
+flops        : 46.001 (GFlops)
+throughput   : 56.617 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.718 (s)
+flops        : 45.067 (GFlops)
+throughput   : 55.468 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 32.191 (s)
+flops        : 44.405 (GFlops)
+throughput   : 54.652 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.759 (s)
+flops        : 45.009 (GFlops)
+throughput   : 55.395 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.202 (s)
+flops        : 45.812 (GFlops)
+throughput   : 56.384 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.133 (s)
+flops        : 45.915 (GFlops)
+throughput   : 56.510 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.823 (s)
+flops        : 44.918 (GFlops)
+throughput   : 55.284 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.474 (s)
+flops        : 45.417 (GFlops)
+throughput   : 55.897 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.689 (s)
+flops        : 45.109 (GFlops)
+throughput   : 55.519 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker01_firstTouch_memAlign
+elapsed time : 31.726 (s)
+flops        : 45.056 (GFlops)
+throughput   : 55.453 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554

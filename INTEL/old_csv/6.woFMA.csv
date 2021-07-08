@@ -1,0 +1,112 @@
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.474 (s)
+flops        : 56.115 (GFlops)
+throughput   : 69.064 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.517 (s)
+flops        : 56.020 (GFlops)
+throughput   : 68.948 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.092 (s)
+flops        : 56.968 (GFlops)
+throughput   : 70.114 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.336 (s)
+flops        : 56.419 (GFlops)
+throughput   : 69.439 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 26.209 (s)
+flops        : 54.540 (GFlops)
+throughput   : 67.126 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 24.801 (s)
+flops        : 57.637 (GFlops)
+throughput   : 70.938 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.386 (s)
+flops        : 56.308 (GFlops)
+throughput   : 69.302 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.096 (s)
+flops        : 56.960 (GFlops)
+throughput   : 70.105 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.344 (s)
+flops        : 56.401 (GFlops)
+throughput   : 69.417 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 24.866 (s)
+flops        : 57.486 (GFlops)
+throughput   : 70.751 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.425 (s)
+flops        : 56.223 (GFlops)
+throughput   : 69.197 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_yDim_reduceInt_woFMA
+elapsed time : 25.382 (s)
+flops        : 56.317 (GFlops)
+throughput   : 69.313 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_zyDim_unrole_reduceInt_woFMA
+elapsed time : 25.658 (s)
+flops        : 55.712 (GFlops)
+throughput   : 68.569 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 256, 256)
+
+ diffusion_ker06_firstTouch_memAlign_peeling_intrinsic_zyDim_unrole_reduceInt_woFMA
+elapsed time : 25.178 (s)
+flops        : 56.774 (GFlops)
+throughput   : 69.876 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554

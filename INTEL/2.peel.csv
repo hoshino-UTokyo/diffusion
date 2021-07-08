@@ -1,0 +1,88 @@
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.468 (s)
+flops        : 39.479 (GFlops)
+throughput   : 48.589 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.559 (s)
+flops        : 39.435 (GFlops)
+throughput   : 48.535 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.923 (s)
+flops        : 39.260 (GFlops)
+throughput   : 48.320 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.187 (s)
+flops        : 39.615 (GFlops)
+throughput   : 48.757 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.120 (s)
+flops        : 39.648 (GFlops)
+throughput   : 48.798 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 80.863 (s)
+flops        : 39.774 (GFlops)
+throughput   : 48.953 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.026 (s)
+flops        : 39.694 (GFlops)
+throughput   : 48.854 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.924 (s)
+flops        : 39.259 (GFlops)
+throughput   : 48.319 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 82.170 (s)
+flops        : 39.142 (GFlops)
+throughput   : 48.174 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 82.355 (s)
+flops        : 39.054 (GFlops)
+throughput   : 48.066 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
+(nx, ny, nz) = (256, 384, 384)
+
+ diffusion_ker02_firstTouch_memAlign_peeling
+elapsed time : 81.955 (s)
+flops        : 39.244 (GFlops)
+throughput   : 48.301 (GB/s)
+accuracy     : 1.110963e-06
+count        : 6554
