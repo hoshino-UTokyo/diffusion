@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------------------------
+Fujitsu Advanced Performance Profiler Version 4.1.0
+   Measured time                 : Tue Jan 19 14:45:36 2021
+   CPU frequency                 : Process      0    -- 
+   Type of program               : Thread (OpenMP)  48
+---------------------------------------------------------------------------------------------
+_____________________________________________________________________________________________
+Basic profile
+
+    *************************************************************************************
+        Application
+    *************************************************************************************
+
+      Kind   Elapsed(s)      User(s)    System(s)         Call
+    ----------------------------------------------------------
+       AVG      45.1814           --           --       1.0000    all 0
+       MAX      45.1814           --           --            1
+       MIN      45.1814           --           --            1
+
+      Kind   Elapsed(s)      User(s)    System(s)         Call
+    ----------------------------------------------------------
+       AVG       7.8292           --           --       1.0000    diffusion_firstTouch_memAlign_peeling_intrinsic_zyDim 5
+       MAX       7.8292           --           --            1
+       MIN       7.8292           --           --            1
+
+      Kind   Elapsed(s)      User(s)    System(s)         Call
+    ----------------------------------------------------------
+       AVG       7.7400           --           --       1.0000    diffusion_firstTouch_memAlign_peeling_zyDim 6
+       MAX       7.7400           --           --            1
+       MIN       7.7400           --           --            1
+
+      Kind   Elapsed(s)      User(s)    System(s)         Call
+    ----------------------------------------------------------
+       AVG      11.6710           --           --       1.0000    diffusion_firstTouch_memAlign_peeling_zyDim_L1blocking 7
+       MAX      11.6710           --           --            1
+       MIN      11.6710           --           --            1
+
+      Kind   Elapsed(s)      User(s)    System(s)         Call
+    ----------------------------------------------------------
+       AVG       7.9936           --           --       1.0000    diffusion_firstTouch_memAlign_peeling_intrinsic_zyDim_pipeline 9
+       MAX       7.9936           --           --            1
+       MIN       7.9936           --           --            1
+
+      Kind   Elapsed(s)      User(s)    System(s)         Call
+    ----------------------------------------------------------
+       AVG       9.3131           --           --       1.0000    diffusion_firstTouch_memAlign_peeling_zyDim_L1blocking_L2blocking 8
+       MAX       9.3131           --           --            1
+       MIN       9.3131           --           --            1
+
+    *************************************************************************************
+        Process 0
+    *************************************************************************************
+
+             Elapsed(s)      User(s)    System(s)         Call
+    ----------------------------------------------------------
+                45.1814           --           --            1    all 0
+                 7.8292           --           --            1    diffusion_firstTouch_memAlign_peeling_intrinsic_zyDim 5
+                 7.7400           --           --            1    diffusion_firstTouch_memAlign_peeling_zyDim 6
+                11.6710           --           --            1    diffusion_firstTouch_memAlign_peeling_zyDim_L1blocking 7
+                 7.9936           --           --            1    diffusion_firstTouch_memAlign_peeling_intrinsic_zyDim_pipeline 9
+                 9.3131           --           --            1    diffusion_firstTouch_memAlign_peeling_zyDim_L1blocking_L2blocking 8
+_____________________________________________________________________________________________

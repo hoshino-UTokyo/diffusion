@@ -1,0 +1,985 @@
+
+{
+  izm = 0; 
+  izc = 1; 
+  izp = 2; 
+
+  for (h = 0; h < TB; h++){  // ????
+    z = h;
+    step = 0;
+    
+    halo = TB-step;
+    b0 = (z == 0)    ? 0 : - nx * ny;
+    t0 = (z == nz-1) ? 0 :   nx * ny;
+    n0 = -nx;
+    s0 =  nx;
+
+#if (YY == 0) || (YY == 3)
+    ystr = 0;
+    iy = TB;
+#else
+    ystr = yy-halo;
+    iy = step;
+#endif
+#if (YY == 2) || (YY == 3)
+    yend = ny;
+#else
+    yend = yy+YBF+halo;
+#endif
+#if (XX == 0) || (XX == 3)
+    xstr = 1;
+#else
+    xstr = xx-halo;
+#endif
+#if (XX == 2) || (XX == 3)
+    xend = nx-1;
+#else
+    xend = xx+XBF+halo;
+#endif
+    for (y = ystr; y < yend; y++) {
+#if (YY == 0) || (YY == 3)
+      n0 = (y == 0)    ? 0 : - nx;
+#endif
+#if (YY == 2) || (YY == 3)
+      s0 = (y == ny-1) ? 0 :   nx;
+#endif
+#if (XX == 0) || (XX == 3)
+      ix = TB;
+      id2 = ix+iy*tbx+izp*tbx*tby+step*tbx*tby*tbz;
+      {
+	x = 0;
+	c = x + y*nx + z*nx*ny;
+	w = c;
+	e = c + 1;
+	n = c + n0;
+	s = c + s0;
+	t = c + t0;
+	b = c + b0;
+	temporal[id2] = cc * f1_t[c] + cw * f1_t[w] + ce * f1_t[e]
+	  + cs * f1_t[s] + cn * f1_t[n] + cb * f1_t[b] + ct * f1_t[t];
+      }
+      id2++;
+#else
+      ix = step;
+      id2 = ix+iy*tbx+izp*tbx*tby+step*tbx*tby*tbz;
+#endif
+      for (x = xstr; x < xend; x++) {
+	c = x + y*nx + z*nx*ny;
+	w = c - 1;
+	e = c + 1;
+	n = c + n0;
+	s = c + s0;
+	t = c + t0;
+	b = c + b0;
+	temporal[id2] = cc * f1_t[c] + cw * f1_t[w] + ce * f1_t[e]
+	  + cs * f1_t[s] + cn * f1_t[n] + cb * f1_t[b] + ct * f1_t[t];
+	id2++;
+      }
+#if (XX == 2) || (XX == 3)
+      {
+	x = nx-1;
+	c = x + y*nx + z*nx*ny;
+	w = c - 1;
+	e = c;
+	n = c + n0;
+	s = c + s0;
+	t = c + t0;
+	b = c + b0;
+	temporal[id2] = cc * f1_t[c] + cw * f1_t[w] + ce * f1_t[e]
+	  + cs * f1_t[s] + cn * f1_t[n] + cb * f1_t[b] + ct * f1_t[t];
+      }
+#endif
+      iy++;
+    }
+    
+    for(z = h-1; z >= 0; z--){
+      b = (z == 0)    ? 0 : (izm-izc)*tbx*tby;
+      t = (z == nz-1) ? 0 : (izp-izc)*tbx*tby;
+      n = -tbx;
+      s =  tbx;
+      
+      halo = TB-(step+1);
+#if (YY == 0) || (YY == 3)
+      ystr = 0;
+      iy = TB;
+#else
+      ystr = yy-halo;
+      iy = step+1;
+#endif
+#if (YY == 2) || (YY == 3)
+      yend = ny;
+#else
+      yend = yy+YBF+halo;
+#endif
+#if (XX == 0) || (XX == 3)
+      xstr = 1;
+#else
+      xstr = xx-halo;
+#endif
+#if (XX == 2) || (XX == 3)
+      xend = nx-1;
+#else
+      xend = xx+XBF+halo;
+#endif
+      for (y = ystr; y < yend; y++) {
+#if (YY == 0) || (YY == 3)
+	n = (y == 0)    ? 0 : -tbx;
+#endif
+#if (YY == 2) || (YY == 3)
+	s = (y == ny-1) ? 0 :  tbx;
+#endif
+#if (XX == 0) || (XX == 3)
+	ix = TB;
+	id2 = ix+iy*tbx+izp*tbx*tby+(step+1)*tbx*tby*tbz;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+	{
+	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	}
+	id2++;
+	id1++;
+#else
+	ix = step+1;
+	id2 = ix+iy*tbx+izp*tbx*tby+(step+1)*tbx*tby*tbz;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+#endif
+	for (x = xstr; x < xend; x++) {
+	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	  id2++;
+	  id1++;
+	}
+#if (XX == 2) || (XX == 3)
+	{
+	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	}
+#endif
+	iy++;
+      }
+      step++;
+    }
+    tmp = izm;
+    izm = izc;
+    izc = izp;
+    izp = tmp;
+    
+  }
+  
+  for (zz = 0; zz < nz-TB; zz++) {
+    z = zz+TB;
+    b0 = (z == 0)    ? 0 : - nx * ny;
+    t0 = (z == nz-1) ? 0 :   nx * ny;
+    n0 = -nx;
+    s0 =  nx;
+    
+    step = 0;
+    halo = TB-step;
+    
+#if (YY == 0) || (YY == 3)
+    ystr = 0;
+    iy = TB;
+#else
+    ystr = yy-halo;
+    iy = step;
+#endif
+#if (YY == 2) || (YY == 3)
+    yend = ny;
+#else
+    yend = yy+YBF+halo;
+#endif
+    #if (XX == 0) || (XX == 3)
+    xstr = 1;
+#else
+    xstr = xx-halo;
+#endif
+#if (XX == 2) || (XX == 3)
+    xend = nx-1;
+#else
+    xend = xx+XBF+halo;
+#endif
+    for (y = ystr; y < yend; y++) {
+#if (YY == 0) || (YY == 3)
+      n0 = (y == 0)    ? 0 : - nx;
+#endif
+#if (YY == 2) || (YY == 3)
+      s0 = (y == ny-1) ? 0 :   nx;
+#endif
+#if (XX == 0) || (XX == 3)
+      ix = TB;
+      id2 = ix+iy*tbx+izp*tbx*tby+step*tbx*tby*tbz;
+      {
+	x = 0;
+	c = x + y*nx + z*nx*ny;
+	w = c;
+	e = c + 1;
+	n = c + n0;
+	s = c + s0;
+	t = c + t0;
+	b = c + b0;
+	temporal[id2] = cc * f1_t[c] + cw * f1_t[w] + ce * f1_t[e]
+	  + cs * f1_t[s] + cn * f1_t[n] + cb * f1_t[b] + ct * f1_t[t];
+      }
+      id2++;
+#else
+      ix = step;
+      id2 = ix+iy*tbx+izp*tbx*tby+step*tbx*tby*tbz;
+#endif
+      for (x = xstr; x < xend; x++) {
+      	c = x + y*nx + z*nx*ny;
+      	w = c - 1;
+      	e = c + 1;
+      	n = c + n0;
+      	s = c + s0;
+      	t = c + t0;
+      	b = c + b0;
+      	temporal[id2] = cc * f1_t[c] + cw * f1_t[w] + ce * f1_t[e]
+      	  + cs * f1_t[s] + cn * f1_t[n] + cb * f1_t[b] + ct * f1_t[t];
+      	id2++;
+      }
+
+      /* int64_t xt = xstr; */
+      /* svbool_t pg = svwhilelt_b64(xt,xend); */
+      /* do{ */
+      /* 	c = xt + y*nx + z*nx*ny; */
+      /* 	w = c - 1; */
+      /* 	e = c + 1; */
+      /* 	n = c + n0; */
+      /* 	s = c + s0; */
+      /* 	t = c + t0; */
+      /* 	b = c + b0; */
+      /* 	//	svbool_t pg = svwhilelt_b64(x,xend); */
+      /* 	svfloat64_t fc_vec  = svld1(pg,(float64_t*)&f1_t[c]); */
+      /* 	svfloat64_t fce_vec = svld1(pg,(float64_t*)&f1_t[e]); */
+      /* 	svfloat64_t fcw_vec = svld1(pg,(float64_t*)&f1_t[w]); */
+      /* 	svfloat64_t fcs_vec = svld1(pg,(float64_t*)&f1_t[s]); */
+      /* 	svfloat64_t fcn_vec = svld1(pg,(float64_t*)&f1_t[n]); */
+      /* 	svfloat64_t fcb_vec = svld1(pg,(float64_t*)&f1_t[b]); */
+      /* 	svfloat64_t fct_vec = svld1(pg,(float64_t*)&f1_t[t]); */
+      /* 	svfloat64_t tmp0,tmp1,tmp2; */
+      /* 	fc_vec  = svmul_x(pg,cc_vec,fc_vec); */
+      /* 	fce_vec = svmul_x(pg,ce_vec,fce_vec); */
+      /* 	fcw_vec = svmul_x(pg,cw_vec,fcw_vec); */
+      /* 	fcn_vec = svmul_x(pg,cn_vec,fcn_vec); */
+      /* 	fcs_vec = svmul_x(pg,cs_vec,fcs_vec); */
+      /* 	fcb_vec = svmul_x(pg,cb_vec,fcb_vec); */
+      /* 	fct_vec = svmul_x(pg,ct_vec,fct_vec); */
+      /* 	tmp0 = svadd_x(pg,fce_vec,fcw_vec); */
+      /* 	tmp1 = svadd_x(pg,fcn_vec,fcs_vec); */
+      /* 	tmp2 = svadd_x(pg,fct_vec,fcb_vec); */
+      /* 	tmp0 = svadd_x(pg,fc_vec, tmp0); */
+      /* 	tmp1 = svadd_x(pg,tmp1,   tmp2); */
+      /* 	tmp0 = svadd_x(pg,tmp0,   tmp1); */
+      /* 	svst1(pg,(float64_t*)&temporal[id2],tmp0); */
+      /* 	id2 += svcntd(); */
+      /* 	xt  += svcntd(); */
+      /* 	pg   = svwhilelt_b64(xt,xend); */
+      /* }while(svptest_any(svptrue_b64(),pg)); */
+
+      /* int xend2 = (xend - xstr)%8; */
+      /* id2 = id2 - (8-xend2)%8; */
+
+      /* for (x = xstr; x < xend-xend2; x+=8) { */
+      /* 	c = x + y*nx + z*nx*ny; */
+      /* 	w = c - 1; */
+      /* 	e = c + 1; */
+      /* 	n = c + n0; */
+      /* 	s = c + s0; */
+      /* 	t = c + t0; */
+      /* 	b = c + b0; */
+      /* 	//	svbool_t pg = svwhilelt_b64(x,xend); */
+      /* 	svfloat64_t fc_vec  = svld1(pg,(float64_t*)&f1_t[c]); */
+      /* 	svfloat64_t fce_vec = svld1(pg,(float64_t*)&f1_t[e]); */
+      /* 	svfloat64_t fcw_vec = svld1(pg,(float64_t*)&f1_t[w]); */
+      /* 	svfloat64_t fcs_vec = svld1(pg,(float64_t*)&f1_t[s]); */
+      /* 	svfloat64_t fcn_vec = svld1(pg,(float64_t*)&f1_t[n]); */
+      /* 	svfloat64_t fcb_vec = svld1(pg,(float64_t*)&f1_t[b]); */
+      /* 	svfloat64_t fct_vec = svld1(pg,(float64_t*)&f1_t[t]); */
+      /* 	svfloat64_t tmp0,tmp1,tmp2; */
+      /* 	fc_vec  = svmul_x(pg,cc_vec,fc_vec); */
+      /* 	fce_vec = svmul_x(pg,ce_vec,fce_vec); */
+      /* 	fcw_vec = svmul_x(pg,cw_vec,fcw_vec); */
+      /* 	fcn_vec = svmul_x(pg,cn_vec,fcn_vec); */
+      /* 	fcs_vec = svmul_x(pg,cs_vec,fcs_vec); */
+      /* 	fcb_vec = svmul_x(pg,cb_vec,fcb_vec); */
+      /* 	fct_vec = svmul_x(pg,ct_vec,fct_vec); */
+      /* 	tmp0 = svadd_x(pg,fce_vec,fcw_vec); */
+      /* 	tmp1 = svadd_x(pg,fcn_vec,fcs_vec); */
+      /* 	tmp2 = svadd_x(pg,fct_vec,fcb_vec); */
+      /* 	tmp0 = svadd_x(pg,fc_vec, tmp0); */
+      /* 	tmp1 = svadd_x(pg,tmp1,   tmp2); */
+      /* 	tmp0 = svadd_x(pg,tmp0,   tmp1); */
+      /* 	svst1(pg,(float64_t*)&temporal[id2],tmp0); */
+      /* 	id2+=8; */
+      /* } */
+      /* for(x = xend-xend2; x < xend;x++){ */
+      /* 	c = x + y*nx + z*nx*ny; */
+      /* 	w = c - 1; */
+      /* 	e = c + 1; */
+      /* 	n = c + n0; */
+      /* 	s = c + s0; */
+      /* 	t = c + t0; */
+      /* 	b = c + b0; */
+      /* 	temporal[id2] = cc * f1_t[c] + cw * f1_t[w] + ce * f1_t[e] */
+      /* 	  + cs * f1_t[s] + cn * f1_t[n] + cb * f1_t[b] + ct * f1_t[t]; */
+      /* 	id2++; */
+      /* } */
+#if (XX == 2) || (XX == 3)
+      {
+      	x = nx-1;
+      	c = x + y*nx + z*nx*ny;
+      	w = c - 1;
+      	e = c;
+      	n = c + n0;
+      	s = c + s0;
+      	t = c + t0;
+      	b = c + b0;
+      	temporal[id2] = cc * f1_t[c] + cw * f1_t[w] + ce * f1_t[e]
+      	  + cs * f1_t[s] + cn * f1_t[n] + cb * f1_t[b] + ct * f1_t[t];
+      }
+#endif
+      iy++;
+    }
+
+    
+    for(z = zz+TB-1; z >= zz+1; z--){
+      b = (z == 0)    ? 0 : (izm-izc)*tbx*tby;
+      t = (z == nz-1) ? 0 : (izp-izc)*tbx*tby;
+      n = -tbx;
+      s =  tbx;
+
+      halo = TB-(step+1);
+#if (YY == 0) || (YY == 3)
+      ystr = 0;
+      iy = TB;
+#else
+      ystr = yy-halo;
+      iy = step+1;
+#endif
+#if (YY == 2) || (YY == 3)
+      yend = ny;
+#else
+      yend = yy+YBF+halo;
+#endif
+      
+#if (XX == 0) || (XX == 3)
+      //      xstr = 1;
+      xstr = 0;
+#else
+      xstr = xx-halo;
+#endif
+#if (XX == 2) || (XX == 3)
+      //      xend = nx-1;
+      xend = nx;
+#else
+      xend = xx+XBF+halo;
+#endif
+      int length = xend-xstr;
+      int remainder = length & (SIMDLENGTH-1);
+      length = length - remainder;
+#if (XX == 0) || (XX == 3)
+      length = length - SIMDLENGTH;
+#endif
+#if (XX == 2) || (XX == 3)
+      if(remainder == 0){
+	length = length - SIMDLENGTH;
+	remainder = 8;
+      }
+#endif
+#if (XX == 0) || (XX == 3)
+      ix = TB;
+#else
+      ix = step+1;
+#endif
+      id2 = ix+iy*tbx+izp*tbx*tby+(step+1)*tbx*tby*tbz;
+      id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+
+      for (y = ystr; y < yend; y++) {
+	int id2p = id2+tbx;
+	int id1p = id1+tbx;
+#if (YY == 0) || (YY == 3)
+	n = (y == 0)    ? 0 : -tbx;
+#endif
+#if (YY == 2) || (YY == 3)
+	s = (y == ny-1) ? 0 :  tbx;
+#endif
+/* #if (XX == 0) || (XX == 3) */
+/* 	{ */
+/* 	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1] + ce * temporal[id1+1] */
+/* 	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t]; */
+/* 	} */
+/* 	id2++; */
+/* 	id1++; */
+/* 	x = xstr+1; */
+/* #else */
+/* 	x = xstr; */
+/* #endif */
+//	x = 0;
+#if (XX == 0) || (XX == 3)
+	{
+	  //	  float64_t fcm1_arr[SIMDLENGTH];
+/* #if SIMDLENGTH == 4 */
+/* 	  float64_t fcm1_arr[SIMDLENGTH] = {temporal[id1],temporal[id1],temporal[id1+1],temporal[id1+2]}; */
+/* #elseif SIMDLENGTH == 8 */
+	  float64_t fcm1_arr[SIMDLENGTH] = {temporal[id1],temporal[id1],temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6]};
+/* #else */
+/* 	  fprintf(stderr,"undefined SIMDLENGTH %s(%d)\n",__FILE__,__LINE__); */
+/* 	  exit(0); */
+/* #endif */
+
+	  /* svfloat64_t fc_vec  = svld1(pg,(float64_t*)&temporal[id1]); */
+	  /* svfloat64_t fce_vec = svld1(pg,(float64_t*)&temporal[id1+1]); */
+	  /* svfloat64_t fcw_vec = svld1(pg,(float64_t*)&fcm1_arr[0]); */
+	  /* svfloat64_t fcs_vec = svld1(pg,(float64_t*)&temporal[id1+s]); */
+	  /* svfloat64_t fcn_vec = svld1(pg,(float64_t*)&temporal[id1+n]); */
+	  /* svfloat64_t fcb_vec = svld1(pg,(float64_t*)&temporal[id1+b]); */
+	  /* svfloat64_t fct_vec = svld1(pg,(float64_t*)&temporal[id1+t]); */
+	  /* svfloat64_t tmp0,tmp1,tmp2; */
+	  /* fc_vec  = svmul_x(pg,cc_vec,fc_vec); */
+	  /* fce_vec = svmul_x(pg,ce_vec,fce_vec); */
+	  /* fcw_vec = svmul_x(pg,cw_vec,fcw_vec); */
+	  /* fcn_vec = svmul_x(pg,cn_vec,fcn_vec); */
+	  /* fcs_vec = svmul_x(pg,cs_vec,fcs_vec); */
+	  /* fcb_vec = svmul_x(pg,cb_vec,fcb_vec); */
+	  /* fct_vec = svmul_x(pg,ct_vec,fct_vec); */
+	  /* tmp0 = svadd_x(pg,fce_vec,fcw_vec); */
+	  /* tmp1 = svadd_x(pg,fcn_vec,fcs_vec); */
+	  /* tmp2 = svadd_x(pg,fct_vec,fcb_vec); */
+	  /* tmp0 = svadd_x(pg,fc_vec, tmp0); */
+	  /* tmp1 = svadd_x(pg,tmp1,   tmp2); */
+	  /* tmp0 = svadd_x(pg,tmp0,   tmp1); */
+	  /* svst1(pg,(float64_t*)&temporal[id2],tmp0); */
+	  svfloat64_t fc_vec  = svld1(pg,(float64_t*)&temporal[id1]);
+	  svfloat64_t fce_vec = svld1(pg,(float64_t*)&temporal[id1+1]);
+	  svfloat64_t fcw_vec = svld1(pg,(float64_t*)&fcm1_arr[0]);
+	  svfloat64_t fcs_vec = svld1(pg,(float64_t*)&temporal[id1+s]);
+	  svfloat64_t fcn_vec = svld1(pg,(float64_t*)&temporal[id1+n]);
+	  svfloat64_t fcb_vec = svld1(pg,(float64_t*)&temporal[id1+b]);
+	  svfloat64_t fct_vec = svld1(pg,(float64_t*)&temporal[id1+t]);
+	  svfloat64_t tmp0,tmp1,tmp2;
+	  fc_vec  = svmul_x(pg,cc_vec,fc_vec);
+	  fce_vec = svmul_x(pg,ce_vec,fce_vec);
+	  fcw_vec = svmul_x(pg,cw_vec,fcw_vec);
+	  fcn_vec = svmul_x(pg,cn_vec,fcn_vec);
+	  fcs_vec = svmul_x(pg,cs_vec,fcs_vec);
+	  fcb_vec = svmul_x(pg,cb_vec,fcb_vec);
+	  fct_vec = svmul_x(pg,ct_vec,fct_vec);
+	  tmp0 = svadd_x(pg,fce_vec,fcw_vec);
+	  tmp1 = svadd_x(pg,fcn_vec,fcs_vec);
+	  tmp2 = svadd_x(pg,fct_vec,fcb_vec);
+	  tmp0 = svadd_x(pg,fc_vec, tmp0);
+	  tmp1 = svadd_x(pg,tmp1,   tmp2);
+	  tmp0 = svadd_x(pg,tmp0,   tmp1);
+	  svst1(pg,(float64_t*)&temporal[id2],tmp0);
+	  id2+=SIMDLENGTH;
+	  id1+=SIMDLENGTH;
+	}
+	//	length = length - SIMDLENGTH;
+	//	x = SIMDLENGTH;
+#endif
+
+	/* for (; x < xend; x++) { */
+	/*   temporal[id2] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1+1] */
+	/*     + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t]; */
+	/*   id2++; */
+	/*   id1++; */
+	/* } */
+
+	/* int xend2 = (xend - x)%8; */
+	/* svbool_t pg = svwhilelt_b64(x,xend); */
+	/* do{ */
+	/*   svfloat64_t fc_vec  = svld1(pg,(float64_t*)&temporal[id1]); */
+	/*   svfloat64_t fce_vec = svld1(pg,(float64_t*)&temporal[id1+1]); */
+	/*   svfloat64_t fcw_vec = svld1(pg,(float64_t*)&temporal[id1-1]); */
+	/*   svfloat64_t fcs_vec = svld1(pg,(float64_t*)&temporal[id1+s]); */
+	/*   svfloat64_t fcn_vec = svld1(pg,(float64_t*)&temporal[id1+n]); */
+	/*   svfloat64_t fcb_vec = svld1(pg,(float64_t*)&temporal[id1+b]); */
+	/*   svfloat64_t fct_vec = svld1(pg,(float64_t*)&temporal[id1+t]); */
+	/*   svfloat64_t tmp0,tmp1,tmp2; */
+	/*   fc_vec  = svmul_x(pg,cc_vec,fc_vec); */
+	/*   fce_vec = svmul_x(pg,ce_vec,fce_vec); */
+	/*   fcw_vec = svmul_x(pg,cw_vec,fcw_vec); */
+	/*   fcn_vec = svmul_x(pg,cn_vec,fcn_vec); */
+	/*   fcs_vec = svmul_x(pg,cs_vec,fcs_vec); */
+	/*   fcb_vec = svmul_x(pg,cb_vec,fcb_vec); */
+	/*   fct_vec = svmul_x(pg,ct_vec,fct_vec); */
+	/*   tmp0 = svadd_x(pg,fce_vec,fcw_vec); */
+	/*   tmp1 = svadd_x(pg,fcn_vec,fcs_vec); */
+	/*   tmp2 = svadd_x(pg,fct_vec,fcb_vec); */
+	/*   tmp0 = svadd_x(pg,fc_vec, tmp0); */
+	/*   tmp1 = svadd_x(pg,tmp1,   tmp2); */
+	/*   tmp0 = svadd_x(pg,tmp0,   tmp1); */
+	/*   svst1(pg,(float64_t*)&temporal[id2],tmp0); */
+	/*   id2 += svcntd(); */
+	/*   id1 += svcntd(); */
+	/*   x   += svcntd(); */
+	/*   pg   = svwhilelt_b64(x,xend); */
+	/* }while(svptest_any(svptrue_b64(),pg)); */
+
+	/* id2 = id2 - (8-xend2)%8; */
+	/* id1 = id1 - (8-xend2)%8; */
+
+	for (x = 0; x < length; x+=SIMDLENGTH) {
+	  svfloat64_t fc_vec  = svld1(pg,(float64_t*)&temporal[id1]);
+	  svfloat64_t fce_vec = svld1(pg,(float64_t*)&temporal[id1+1]);
+	  svfloat64_t fcw_vec = svld1(pg,(float64_t*)&temporal[id1-1]);
+	  svfloat64_t fcs_vec = svld1(pg,(float64_t*)&temporal[id1+s]);
+	  svfloat64_t fcn_vec = svld1(pg,(float64_t*)&temporal[id1+n]);
+	  svfloat64_t fcb_vec = svld1(pg,(float64_t*)&temporal[id1+b]);
+	  svfloat64_t fct_vec = svld1(pg,(float64_t*)&temporal[id1+t]);
+	  svfloat64_t tmp0,tmp1,tmp2;
+	  fc_vec  = svmul_x(pg,cc_vec,fc_vec);
+	  fce_vec = svmul_x(pg,ce_vec,fce_vec);
+	  fcw_vec = svmul_x(pg,cw_vec,fcw_vec);
+	  fcn_vec = svmul_x(pg,cn_vec,fcn_vec);
+	  fcs_vec = svmul_x(pg,cs_vec,fcs_vec);
+	  fcb_vec = svmul_x(pg,cb_vec,fcb_vec);
+	  fct_vec = svmul_x(pg,ct_vec,fct_vec);
+	  tmp0 = svadd_x(pg,fce_vec,fcw_vec);
+	  tmp1 = svadd_x(pg,fcn_vec,fcs_vec);
+	  tmp2 = svadd_x(pg,fct_vec,fcb_vec);
+	  tmp0 = svadd_x(pg,fc_vec, tmp0);
+	  tmp1 = svadd_x(pg,tmp1,   tmp2);
+	  tmp0 = svadd_x(pg,tmp0,   tmp1);
+	  svst1(pg,(float64_t*)&temporal[id2],tmp0);
+	  id2+=SIMDLENGTH;
+	  id1+=SIMDLENGTH;
+	}
+/* #if (XX == 2) || (XX == 3) */
+/* 	{ */
+/* 	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1] */
+/* 	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t]; */
+/* 	} */
+/* #endif */
+
+/* #if (XX == 2) || (XX == 3) */
+/* 	x = 0; */
+/* 	svbool_t pgt = svwhilelt_b64(x,remainder); */
+/* 	{ */
+/* 	  //	  float64_t *fcp1_arr; */
+/* /\* #if (SIMDLENGTH == 4) *\/ */
+/* /\* 	  switch(remainder){ *\/ */
+/* /\* 	  case 0:  *\/ */
+/* /\* 	    float64_t tmp0[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+3]}; *\/ */
+/* /\* 	    fcp1_arr = tmp0; *\/ */
+/* /\* 	    break; *\/ */
+/* /\* 	  case 1:  *\/ */
+/* /\* 	    float64_t tmp1[SIMDLENGTH] = {temporal[id1+3]}; *\/ */
+/* /\* 	    fcp1_arr = tmp1; *\/ */
+/* /\* 	    break; *\/ */
+/* /\* 	  case 2:  *\/ */
+/* /\* 	    float64_t tmp2[SIMDLENGTH] = {temporal[id1+3],temporal[id1+3]}; *\/ */
+/* /\* 	    fcp1_arr = tmp2; *\/ */
+/* /\* 	    break; *\/ */
+/* /\* 	  case 3:  *\/ */
+/* /\* 	    float64_t tmp3[SIMDLENGTH] = {temporal[id1+2],temporal[id1+3],temporal[id1+3]}; *\/ */
+/* /\* 	    fcp1_arr = tmp3; *\/ */
+/* /\* 	    break; *\/ */
+/* /\* 	  default:  *\/ */
+/* /\* 	    fprintf(stderr,"error at %s(%d)\n",__FILE__,__LINE__); *\/ */
+/* /\* 	    exit(0); *\/ */
+/* /\* 	  } *\/ */
+/* /\* #elseif (SIMDLENGTH == 8) *\/ */
+
+/* 	  /\* switch(remainder){ *\/ */
+/* 	  /\* case 0:  *\/ */
+/* 	  /\*   float64_t tmp0[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp0; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* case 1:  *\/ */
+/* 	  /\*   float64_t tmp1[SIMDLENGTH] = {temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp1; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* case 2:  *\/ */
+/* 	  /\*   float64_t tmp2[SIMDLENGTH] = {temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp2; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* case 3:  *\/ */
+/* 	  /\*   float64_t tmp3[SIMDLENGTH] = {temporal[id1+6],temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp3; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* case 4:  *\/ */
+/* 	  /\*   float64_t tmp4[SIMDLENGTH] = {temporal[id1+5],temporal[id1+6],temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp4; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* case 5:  *\/ */
+/* 	  /\*   float64_t tmp5[SIMDLENGTH] = {temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp5; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* case 6:  *\/ */
+/* 	  /\*   float64_t tmp6[SIMDLENGTH] = {temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp6; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* case 7:  *\/ */
+/* 	  /\*   float64_t tmp7[SIMDLENGTH] = {temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp7; *\/ */
+/* 	  /\*   break; *\/ */
+/* 	  /\* default:  *\/ */
+/* 	  /\*   fprintf(stderr,"error at %s(%d)\n",__FILE__,__LINE__); *\/ */
+/* 	  /\*   exit(0); *\/ */
+/* 	  /\* } *\/ */
+
+/* 	  /\* if(remainder == 8){ *\/ */
+/* 	  /\*   float64_t tmp0[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+7],temporal[id1+7]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp0; *\/ */
+/* 	  /\* }else if(remainder == 1) { *\/ */
+/* 	  /\*   float64_t tmp1[SIMDLENGTH] = {temporal[id1]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp1; *\/ */
+/* 	  /\* }else if(remainder == 2) { *\/ */
+/* 	  /\*   float64_t tmp2[SIMDLENGTH] = {temporal[id1+1],temporal[id1+1]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp2; *\/ */
+/* 	  /\* }else if(remainder == 3) { *\/ */
+/* 	  /\*   float64_t tmp3[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+2]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp3; *\/ */
+/* 	  /\* }else if(remainder == 4) { *\/ */
+/* 	  /\*   float64_t tmp4[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+3]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp4; *\/ */
+/* 	  /\* }else if(remainder == 5) { *\/ */
+/* 	  /\*   float64_t tmp5[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+4]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp5; *\/ */
+/* 	  /\* }else if(remainder == 6) { *\/ */
+/* 	  /\*   float64_t tmp6[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+5]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp6; *\/ */
+/* 	  /\* }else if(remainder == 7) { *\/ */
+/* 	  /\*   float64_t tmp7[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+6]}; *\/ */
+/* 	  /\*   fcp1_arr = tmp7; *\/ */
+/* 	  /\* }else { *\/ */
+/* 	  /\*   fprintf(stderr,"error at %s(%d)\n",__FILE__,__LINE__); *\/ */
+/* 	  /\*   exit(0); *\/ */
+/* 	  /\* } *\/ */
+
+/* 	  /\* #else *\/ */
+/* /\* 	  fprintf(stderr,"undefined SIMDLENGTH %s(%d)\n",__FILE__,__LINE__); *\/ */
+/* /\* 	  exit(0); *\/ */
+/* /\* #endif *\/ */
+
+/* 	  float64_t fcp1_arr[SIMDLENGTH]; */
+/* 	  for(int i = 0; i < remainder; i++){ */
+/* 	    if(i == remainder-1){ */
+/* 	      fcp1_arr[i] = temporal[id1+i]; */
+/* 	    }else{ */
+/* 	      fcp1_arr[i] = temporal[id1+1+i]; */
+/* 	    } */
+/* 	  } */
+/* 	  svfloat64_t fc_vec  = svld1(pgt,(float64_t*)&temporal[id1]); */
+/* 	  svfloat64_t fce_vec = svld1(pgt,(float64_t*)&fcp1_arr[0]); */
+/* 	  svfloat64_t fcw_vec = svld1(pgt,(float64_t*)&temporal[id1-1]); */
+/* 	  svfloat64_t fcs_vec = svld1(pgt,(float64_t*)&temporal[id1+s]); */
+/* 	  svfloat64_t fcn_vec = svld1(pgt,(float64_t*)&temporal[id1+n]); */
+/* 	  svfloat64_t fcb_vec = svld1(pgt,(float64_t*)&temporal[id1+b]); */
+/* 	  svfloat64_t fct_vec = svld1(pgt,(float64_t*)&temporal[id1+t]); */
+/* 	  svfloat64_t tmp0,tmp1,tmp2; */
+/* 	  fc_vec  = svmul_x(pgt,cc_vec,fc_vec); */
+/* 	  fce_vec = svmul_x(pgt,ce_vec,fce_vec); */
+/* 	  fcw_vec = svmul_x(pgt,cw_vec,fcw_vec); */
+/* 	  fcn_vec = svmul_x(pgt,cn_vec,fcn_vec); */
+/* 	  fcs_vec = svmul_x(pgt,cs_vec,fcs_vec); */
+/* 	  fcb_vec = svmul_x(pgt,cb_vec,fcb_vec); */
+/* 	  fct_vec = svmul_x(pgt,ct_vec,fct_vec); */
+/* 	  tmp0 = svadd_x(pgt,fce_vec,fcw_vec); */
+/* 	  tmp1 = svadd_x(pgt,fcn_vec,fcs_vec); */
+/* 	  tmp2 = svadd_x(pgt,fct_vec,fcb_vec); */
+/* 	  tmp0 = svadd_x(pgt,fc_vec, tmp0); */
+/* 	  tmp1 = svadd_x(pgt,tmp1,   tmp2); */
+/* 	  tmp0 = svadd_x(pgt,tmp0,   tmp1); */
+/* 	  svst1(pgt,(float64_t*)&temporal[id2],tmp0); */
+/* 	} */
+/* #else */
+	x = 0;
+	svbool_t pgt = svwhilelt_b64(x,remainder);
+	{
+#if (XX == 2) || (XX == 3)
+
+	  float64_t fcp1_arr[SIMDLENGTH];
+	  for(int i = 0; i < remainder; i++){
+	    if(i == remainder-1){
+	      fcp1_arr[i] = temporal[id1+i];
+	    }else{
+	      fcp1_arr[i] = temporal[id1+1+i];
+	    }
+	  }
+	  /* float64_t *fcp1_arr; */
+	  /* if(remainder == 8){ */
+	  /*   float64_t tmp0[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+7],temporal[id1+7]}; */
+	  /*   fcp1_arr = tmp0; */
+	  /* }else if(remainder == 1) { */
+	  /*   float64_t tmp1[SIMDLENGTH] = {temporal[id1]}; */
+	  /*   fcp1_arr = tmp1; */
+	  /* }else if(remainder == 2) { */
+	  /*   float64_t tmp2[SIMDLENGTH] = {temporal[id1+1],temporal[id1+1]}; */
+	  /*   fcp1_arr = tmp2; */
+	  /* }else if(remainder == 3) { */
+	  /*   float64_t tmp3[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+2]}; */
+	  /*   fcp1_arr = tmp3; */
+	  /* }else if(remainder == 4) { */
+	  /*   float64_t tmp4[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+3]}; */
+	  /*   fcp1_arr = tmp4; */
+	  /* }else if(remainder == 5) { */
+	  /*   float64_t tmp5[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+4]}; */
+	  /*   fcp1_arr = tmp5; */
+	  /* }else if(remainder == 6) { */
+	  /*   float64_t tmp6[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+5]}; */
+	  /*   fcp1_arr = tmp6; */
+	  /* }else if(remainder == 7) { */
+	  /*   float64_t tmp7[SIMDLENGTH] = {temporal[id1+1],temporal[id1+2],temporal[id1+3],temporal[id1+4],temporal[id1+5],temporal[id1+6],temporal[id1+6]}; */
+	  /*   fcp1_arr = tmp7; */
+	  /* }else { */
+	  /*   fprintf(stderr,"error at %s(%d)\n",__FILE__,__LINE__); */
+	  /*   exit(0); */
+	  /* } */
+	  svfloat64_t fce_vec = svld1(pgt,(float64_t*)&fcp1_arr[0]);
+#else
+	  svfloat64_t fce_vec = svld1(pgt,(float64_t*)&temporal[id1+1]);
+#endif
+	  svfloat64_t fc_vec  = svld1(pgt,(float64_t*)&temporal[id1]);
+	  svfloat64_t fcw_vec = svld1(pgt,(float64_t*)&temporal[id1-1]);
+	  svfloat64_t fcs_vec = svld1(pgt,(float64_t*)&temporal[id1+s]);
+	  svfloat64_t fcn_vec = svld1(pgt,(float64_t*)&temporal[id1+n]);
+	  svfloat64_t fcb_vec = svld1(pgt,(float64_t*)&temporal[id1+b]);
+	  svfloat64_t fct_vec = svld1(pgt,(float64_t*)&temporal[id1+t]);
+	  svfloat64_t tmp0,tmp1,tmp2;
+	  fc_vec  = svmul_x(pgt,cc_vec,fc_vec);
+	  fce_vec = svmul_x(pgt,ce_vec,fce_vec);
+	  fcw_vec = svmul_x(pgt,cw_vec,fcw_vec);
+	  fcn_vec = svmul_x(pgt,cn_vec,fcn_vec);
+	  fcs_vec = svmul_x(pgt,cs_vec,fcs_vec);
+	  fcb_vec = svmul_x(pgt,cb_vec,fcb_vec);
+	  fct_vec = svmul_x(pgt,ct_vec,fct_vec);
+	  tmp0 = svadd_x(pgt,fce_vec,fcw_vec);
+	  tmp1 = svadd_x(pgt,fcn_vec,fcs_vec);
+	  tmp2 = svadd_x(pgt,fct_vec,fcb_vec);
+	  tmp0 = svadd_x(pgt,fc_vec, tmp0);
+	  tmp1 = svadd_x(pgt,tmp1,   tmp2);
+	  tmp0 = svadd_x(pgt,tmp0,   tmp1);
+	  svst1(pgt,(float64_t*)&temporal[id2],tmp0);
+	}
+/* #endif */
+	/* iy++; */
+	/* id2 = id2 - (xend-xstr) + tbx; */
+	/* id1 = id1 - (xend-xstr) + tbx; */
+	id2 = id2p;
+	id1 = id1p;
+      }
+      step++;
+
+    }
+
+    {
+      z = zz;
+      b = (z == 0)    ? 0 : (izm-izc)*tbx*tby;
+      t = (z == nz-1) ? 0 : (izp-izc)*tbx*tby;
+      n = -tbx;
+      s =  tbx;
+      
+      halo = TB-(step+1);
+#if (YY == 0) || (YY == 3)
+      ystr = 0;
+      iy = TB;
+#else
+      ystr = yy-halo;
+      iy = step+1;
+#endif
+#if (YY == 2) || (YY == 3)
+      yend = ny;
+#else
+      yend = yy+YBF+halo;
+#endif
+#if (XX == 0) || (XX == 3)
+      xstr = 1;
+#else
+      xstr = xx-halo;
+#endif
+#if (XX == 2) || (XX == 3)
+      xend = nx-1;
+#else
+      xend = xx+XBF+halo;
+#endif
+      for (y = ystr; y < yend; y++) {
+#if (YY == 0) || (YY == 3)
+	n = (y == 0)    ? 0 : -tbx;
+#endif
+#if (YY == 2) || (YY == 3)
+	s = (y == ny-1) ? 0 :  tbx;
+#endif
+#if (XX == 0) || (XX == 3)
+	ix = TB;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+	{
+	  x = 0;
+	  c = x + y*nx + z*nx*ny;
+	  f2_t[c] = cc * temporal[id1] + cw * temporal[id1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	}
+	id1++;
+#else
+	ix = step+1;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+#endif
+	for (x = xstr; x < xend; x++) {
+	  c = x + y*nx + z*nx*ny;
+	  f2_t[c] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	  id1++;
+	}
+#if (XX == 2) || (XX == 3)
+	x = nx-1; 
+	c = x + y*nx + z*nx*ny;
+	f2_t[c] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+#endif
+	iy++;
+      }
+    }
+    tmp = izm;
+    izm = izc;
+    izc = izp;
+    izp = tmp;
+    
+  }
+  
+  for (zz = nz-TB, h = TB-1; zz < nz; zz++, h--) {
+    
+    step = TB-1-h;
+    
+    for(z = zz+h ; z >= zz+1; z--){
+      b = (z == 0)    ? 0 : (izm-izc)*tbx*tby;
+      t = (z == nz-1) ? 0 : (izp-izc)*tbx*tby;
+      n = -tbx;
+      s =  tbx;
+
+      halo = TB-(step+1);
+#if (YY == 0) || (YY == 3)
+      ystr = 0;
+      iy = TB;
+#else
+      ystr = yy-halo;
+      iy = step+1;
+#endif
+#if (YY == 2) || (YY == 3)
+      yend = ny;
+#else
+      yend = yy+YBF+halo;
+#endif
+#if (XX == 0) || (XX == 3)
+      xstr = 1;
+#else
+      xstr = xx-halo;
+#endif
+#if (XX == 2) || (XX == 3)
+      xend = nx-1;
+#else
+      xend = xx+XBF+halo;
+#endif
+      for (y = ystr; y < yend; y++) {
+#if (YY == 0) || (YY == 3)
+	n = (y == 0)    ? 0 : -tbx;
+#endif
+#if (YY == 2) || (YY == 3)
+	s = (y == ny-1) ? 0 :  tbx;
+#endif
+#if (XX == 0) || (XX == 3)
+	ix = TB;
+	id2  = ix+iy*tbx+izp*tbx*tby+(step+1)*tbx*tby*tbz;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+	{
+	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	}
+	id2++;
+	id1++;
+#else
+	ix = step+1;
+	id2  = ix+iy*tbx+izp*tbx*tby+(step+1)*tbx*tby*tbz;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+#endif
+	for (x = xstr; x < xend; x++) {
+	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	  id2++;
+	  id1++;
+	}
+#if (XX == 2) || (XX == 3)
+	{
+	  temporal[id2] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	}
+#endif
+	iy++;
+      }
+      step++;
+
+    }
+
+    {
+      z = zz;
+      b = (z == 0)    ? 0 : (izm-izc)*tbx*tby;
+      t = (z == nz-1) ? 0 : (izp-izc)*tbx*tby;
+      n = -tbx;
+      s =  tbx;
+      halo = TB-(step+1);
+      
+#if (YY == 0) || (YY == 3)
+      ystr = 0;
+      iy = TB;
+#else
+      ystr = yy-halo;
+      iy = step+1;
+#endif
+#if (YY == 2) || (YY == 3)
+      yend = ny;
+#else
+      yend = yy+YBF+halo;
+#endif
+#if (XX == 0) || (XX == 3)
+      xstr = 1;
+#else
+      xstr = xx-halo;
+#endif
+#if (XX == 2) || (XX == 3)
+      xend = nx-1;
+#else
+      xend = xx+XBF+halo;
+#endif
+      for (y = ystr; y < yend; y++) {
+#if (YY == 0) || (YY == 3)
+	n = (y == 0)    ? 0 : -tbx;
+#endif
+#if (YY == 2) || (YY == 3)
+	s = (y == ny-1) ? 0 :  tbx;
+#endif
+#if (XX == 0) || (XX == 3)
+	ix = TB;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+	{
+	  x = 0;
+	  c = x + y*nx + z*nx*ny;
+	  f2_t[c] = cc * temporal[id1] + cw * temporal[id1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	}
+	id1++;
+#else
+	ix = step+1;
+	id1 = ix+iy*tbx+izc*tbx*tby+step*tbx*tby*tbz;
+#endif
+	for (x = xstr; x < xend; x++) {
+	  c = x + y*nx + z*nx*ny;
+	  f2_t[c] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1+1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+	  id1++;
+	}
+#if (XX == 2) || (XX == 3)
+	x = nx-1; 
+	c = x + y*nx + z*nx*ny;
+	f2_t[c] = cc * temporal[id1] + cw * temporal[id1-1] + ce * temporal[id1]
+	    + cs * temporal[id1+s] + cn * temporal[id1+n] + cb * temporal[id1+b] + ct * temporal[id1+t];
+#endif
+	iy++;
+      }
+    }
+    
+    tmp = izm;
+    izm = izc;
+    izc = izp;
+    izp = tmp;
+  }
+}
