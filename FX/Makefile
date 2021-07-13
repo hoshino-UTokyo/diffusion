@@ -35,7 +35,7 @@ endif
 #fx700
 ifeq ($(SYSTEM),FX)
 OPTFLAGS = -Kfast,openmp,zfill -O3 -DSVE
-OPTFLAGC = -Kfast,openmp -O3 -DSVE -DBLAS -Khpctag -Nfjomplib -Nfjprof  -Kswp_strong -Nlst=t -Koptmsg=guide #-Knoprefetch #-DDEBUG #-Kzfill=18 -Kprefetch_line=9 -Kprefetch_line_L2=70 -Kprefetch_sequential=soft 
+OPTFLAGC = -Kfast,openmp -O3 -DSVE -DBLAS -Khpctag -Nfjomplib -Nfjprof -Nlst=t -Koptmsg=2 -Knosch_pre_ra #-Knoprefetch #-DDEBUG #-Kzfill=18 -Kprefetch_line=9 -Kprefetch_line_L2=70 -Kprefetch_sequential=soft 
 #OPTFLAGC = -g -DSVE -Kopenmp #-Kzfill=18 -Kprefetch_line=9 -Kprefetch_line_L2=70 -Kprefetch_sequential=soft 
 #OPTFLAGC = -Kfast,openmp -O3 -DSVE -Nclang #-Kzfill=18 -Kprefetch_line=9 -Kprefetch_line_L2=70 -Kprefetch_sequential=soft 
 #OPTFLAGC += -Kprefetch_sequential=soft,prefetch_strong,prefetch_line=9 -Kprefetch_line_L2=70 
@@ -53,6 +53,7 @@ OBJS =  diffusion_ker00.o diffusion_ker01.o diffusion_ker02.o diffusion_ker03.o 
 OBJS += diffusion_ker10.o diffusion_ker11.o diffusion_ker12.o diffusion_ker13.o diffusion_ker14.o diffusion_ker15.o diffusion_ker16.o diffusion_ker17.o diffusion_ker18.o diffusion_ker19.o
 OBJS += diffusion_ker20.o diffusion_ker21.o diffusion_ker22.o diffusion_ker23.o diffusion_ker24.o diffusion_ker25.o diffusion_ker26.o diffusion_ker27.o diffusion_ker28.o diffusion_ker29.o
 OBJS += diffusion_ker30.o diffusion_ker31.o diffusion_ker32.o diffusion_ker33.o diffusion_ker34.o diffusion_ker35.o diffusion_ker36.o diffusion_ker37.o diffusion_ker38.o diffusion_ker39.o
+OBJS += diffusion_ker40.o
 OBJS += main.o 
 #OBJS= matvec.o
 

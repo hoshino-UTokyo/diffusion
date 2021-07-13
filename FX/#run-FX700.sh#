@@ -28,16 +28,16 @@ export OMP_NUM_THREADS=48
 #     # ./diffusion.out -s 38 -e 38 >> 10.tb.csv
 # done
 
-./diffusion.out -s 3 -e 6
+# ./diffusion.out -s 40 
 
-# STR=40
-# END=40
-# TAG=01
-# for args in `seq 1 17`
-# do 
-# #    fapp -C -d ./rep_${STR}_${END}_s${args} -Hevent=pa${args} ./diffusion.out -nx 256 -ny 256 -nz 256 -s ${STR} -e ${END}
-#     fapp -C -d ./rep_${STR}_${END}_${TAG}_s${args} -Hevent=pa${args} ./diffusion.out -s ${STR} -e ${END}
-# done
+STR=39
+END=39
+TAG=01
+for args in `seq 1 17`
+do 
+#    fapp -C -d ./rep_${STR}_${END}_s${args} -Hevent=pa${args} ./diffusion.out -nx 256 -ny 256 -nz 256 -s ${STR} -e ${END}
+    fapp -C -d ./rep_${STR}_${END}_${TAG}_s${args} -Hevent=pa${args} ./diffusion.out -s ${STR} -e ${END}
+done
 
 # fapp -C -d ./rep_s1 -Hevent=pa1 ./diffusion.out -s 6 -e 6
 # fapp -C -d ./rep_s2 -Hevent=pa2 ./diffusion.out -s 6 -e 6

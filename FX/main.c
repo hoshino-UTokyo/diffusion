@@ -129,18 +129,14 @@ int main(int argc, char *argv[])
 
     char name[300] = "diffusion";
     char ker_id_string[6];
-    if(ker_id < 10) {
-      sprintf(ker_id_string,"%s%d%d","_ker",0,ker_id);
-    }else{
-      sprintf(ker_id_string,"%s%d","_ker",ker_id);
-    }
+    sprintf(ker_id_string,"%s%02d","_ker",ker_id);
     strcat(name,ker_id_string);
     int num_opt = sizeof(opt_list)/sizeof(*opt_list);
     //int num_opt = sizeof(opt_flags[ker_id])/sizeof(*opt_flags[ker_id]);
     int i;
     for(i = 0;i < num_opt;i++){
       //      fprintf(stdout, "%d/%d,%s,%d,%d\n", i,num_opt,opt_list[i],opt_flags[ker_id][i],ker_id);
-      if(opt_flags[ker_id][i]) {
+      if(opt_flags[ker_id][i] == 1) {
 	char bar[] = "_";
 	strcat(name,bar);
 	strcat(name,opt_list[i]);

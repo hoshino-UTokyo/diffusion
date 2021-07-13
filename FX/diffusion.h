@@ -45,6 +45,7 @@
 #include "diffusion_ker37.h"
 #include "diffusion_ker38.h"
 #include "diffusion_ker39.h"
+#include "diffusion_ker40.h"
 
 static void (*allocate[])(REAL **buff_ret, const int nx, const int ny, const int nz)
   = {allocate_ker00
@@ -87,6 +88,7 @@ static void (*allocate[])(REAL **buff_ret, const int nx, const int ny, const int
      ,allocate_ker37
      ,allocate_ker38
      ,allocate_ker39
+     ,allocate_ker40
 };
 
 static void (*init[])(REAL *buff1, const int nx, const int ny, const int nz,
@@ -133,6 +135,7 @@ static void (*init[])(REAL *buff1, const int nx, const int ny, const int nz,
      ,init_ker37
      ,init_ker38
      ,init_ker39
+     ,init_ker40
 };
 
 static void (*diffusion[])(REAL *restrict f1, REAL *restrict f2, int nx, int ny, int nz,
@@ -179,6 +182,7 @@ static void (*diffusion[])(REAL *restrict f1, REAL *restrict f2, int nx, int ny,
      ,diffusion_ker37
      ,diffusion_ker38
      ,diffusion_ker39
+     ,diffusion_ker40
 };
 
 static char *available[] =
@@ -221,6 +225,8 @@ static char *available[] =
    ,"36"
    ,"37"
    ,"38"
+   ,"39"
+   ,"40"
   };
 
 static char *opt_list[] =
@@ -247,6 +253,7 @@ static char *opt_list[] =
    ,"local"
    ,"Zunroll"
    ,"Z4unroll"
+   ,"swpl"
   };
 
 static int opt_flags[][30] =
@@ -288,9 +295,10 @@ static int opt_flags[][30] =
    ,{1,1,1,1,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,1,0}   //35
    //   ,{1,1,1,1,0,1,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0}   //36 
    ,{1,1,1,1,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,1}   //36
-   ,{1,1,1,1,0,1,0,1,1,0,1,1,0,0.0,1}   //20
-   ,{1,1,1,1,0,0,1,0,0,0,0,0,0,0.0,0,0,0,0,1}   //26
-   ,{1,1,1,1,0,1,0,0,0,1,1,1}   //11
+   ,{1,1,1,1,0,1,0,1,1,0,1,1,0,0.0,1}   //37
+   ,{1,1,1,1,0,0,1,0,0,0,0,0,0,0.0,0,0,0,0,1}   //38
+   ,{1,1,1,1,0,1,0,0,0,1,1,1}   //39
+   ,{1,1,1,1,0,1,0,0,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,1}   //40
   };
 
 #endif /* DIFFUSION_H */
